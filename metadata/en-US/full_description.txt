@@ -1,0 +1,1 @@
+<p><i>Third Bank</i> is an experimental non-custodial Bitcoin wallet that focuses on simplicity and ease of use.</p><p><br><b>Features:</b></p><ul><li>Non-custodial</li><li>Intuitive and easy-to-navigate interface design</li><li>Easily lock the app with your phone's PIN or biometrics during setup</li><li>Effortlessly scan QR codes to send Bitcoin to another address</li></ul>

@@ -1,0 +1,1 @@
+An experimental non-custodial Bitcoin wallet that focuses on simplicity and ease of use.

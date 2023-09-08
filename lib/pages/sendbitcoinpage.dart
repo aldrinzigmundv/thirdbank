@@ -230,7 +230,7 @@ class _SendPage extends State<SendBitcoinPage> {
           child: const Padding(
               padding: EdgeInsets.all(12.0),
               child: Text(
-                "Review Details",
+                "Review Transaction",
                 style: TextStyle(fontSize: 20.0),
               )),
         ),

@@ -1,0 +1,52 @@
+name: thirdbank
+description: A free and open-source experimental non-custodial Bitcoin wallet that focuses on simplicity and ease of use.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  barcode_scan2: ^4.2.4
+  bdk_flutter: ^0.29.0
+  flutter:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_mobx: ^2.0.6+5
+  flutter_secure_storage: ^9.0.0
+  http: ^1.1.0
+  intl: ^0.18.1
+  local_auth: ^2.1.7
+  mobx: ^2.2.0
+  mobx_codegen: ^2.3.0
+  qr_flutter: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icons/icon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/icons/icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/icon.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/icon.png

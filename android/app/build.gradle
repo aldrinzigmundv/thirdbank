@@ -29,7 +29,7 @@ def keystoreProperties = new Properties()
    }
 
 android {
-    namespace "com.example.thirdbank"
+    namespace "io.github.aldrinzigmundv.thirdbank"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

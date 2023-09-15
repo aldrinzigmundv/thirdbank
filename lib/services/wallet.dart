@@ -77,7 +77,7 @@ abstract class _WalletProvider with Store {
       final sbt = await wallet.sign(psbt: txBuilderResult.psbt);
       final tx = await sbt.extractTx();
       await blockchain.broadcast(tx);
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
     }
   }
@@ -105,7 +105,7 @@ abstract class _WalletProvider with Store {
         descriptors.add(descriptor);
       }
       return descriptors;
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
     }
   }
@@ -121,7 +121,7 @@ abstract class _WalletProvider with Store {
                   retry: 5,
                   url: "ssl://electrum.blockstream.info:60002",
                   validateDomain: false)));
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
     }
   }
@@ -131,7 +131,7 @@ abstract class _WalletProvider with Store {
     try {
     final res = await wallet.getAddress(addressIndex: const AddressIndex());
     walletAddress = res.address;
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
     }
   }
@@ -149,7 +149,7 @@ abstract class _WalletProvider with Store {
           network: Network.Bitcoin,
           databaseConfig: const DatabaseConfig.memory());
       wallet = res;
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
     }
   }

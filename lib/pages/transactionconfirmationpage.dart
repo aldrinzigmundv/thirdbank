@@ -28,7 +28,7 @@ class TransactionConfirmationPage extends StatelessWidget {
           addressStr: address, amount: int.parse(amount), fee: finalFee);
       showTransactionSentMessage(context);
       goBackTwice(context);
-    } on Exception catch (_) {
+    } catch (_) {
       showError(context);
     }
   }

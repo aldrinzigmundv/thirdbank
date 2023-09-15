@@ -45,7 +45,7 @@ class _SendPage extends State<SendBitcoinPage> {
         _scanQRButtonText = "Rescan Recipient's QR Code";
         _destinationAddress.text = cleanAddress(result.rawContent);
       });
-    } on Exception catch (_) {
+    } catch (_) {
       showQRScannerError();
     }
   }

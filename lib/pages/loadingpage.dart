@@ -49,7 +49,7 @@ class _LoadingPageState extends State<LoadingPage> {
     wallet.mnemonic = "";
     wallet.getBlockchainHeight();
     goToHome();
-    } on Exception catch (_) {
+    } catch (_) {
       setState(() {
       _loadingpagetext =
         "Something went wrong. Either phone authentication failed or bad internet connection...";

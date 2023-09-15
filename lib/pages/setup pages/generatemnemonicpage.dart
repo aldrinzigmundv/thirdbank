@@ -42,7 +42,7 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
       await wallet.getNewAddress();
       await storage.write(key: "address", value: wallet.walletAddress);
       evaluateNextPage();
-    } on Exception catch (_) {
+    } catch (_) {
       showFailedCreatingWalletError();
     }
   }

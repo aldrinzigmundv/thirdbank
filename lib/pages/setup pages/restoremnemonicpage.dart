@@ -48,7 +48,7 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
         await wallet.getNewAddress();
         await storage.write(key: "address", value: wallet.walletAddress);
         evaluateNextPage();
-      } on Exception catch (_) {
+      } catch (_) {
         showFailedRestoringWalletError();
       }
     } else {

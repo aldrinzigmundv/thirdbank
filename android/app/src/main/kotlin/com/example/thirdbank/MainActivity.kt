@@ -1,4 +1,4 @@
-package com.example.thirdbank
+package io.github.aldrinzigmundv.thirdbank
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

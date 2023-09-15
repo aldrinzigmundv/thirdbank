@@ -1,7 +1,7 @@
 name: thirdbank
 description: A free and open-source experimental non-custodial Bitcoin wallet that focuses on simplicity and ease of use.
 publish_to: 'none'
-version: 0.1.0
+version: 0.5.0
 
 environment:
   sdk: '>=3.1.0 <4.0.0'

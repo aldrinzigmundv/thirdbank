@@ -24,7 +24,7 @@ class TransactionConfirmationPage extends StatelessWidget {
     try {
       await esploraProvider.getFees();
       final finalFee = esploraProvider.getFee(format.formatSpeed(fee));
-      wallet.sendTx(
+      await wallet.sendTx(
           addressStr: address, amount: int.parse(amount), fee: finalFee);
       if (context.mounted) {
         showTransactionSentMessage(context);

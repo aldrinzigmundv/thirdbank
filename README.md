@@ -22,8 +22,6 @@ I developed this app after working for a smart TV manufacturer and receiving a l
 
 Please be aware that this application is still in its early stages of development and there is a possibility of losing all your funds. Therefore, it's important to exercise caution, use the app at your own discretion, and refrain from holding significant amounts of funds within the app due to the said risk.
 
-I have yet to work on refactoring the code, adding comments for better readability, and improving the overall organization of the project but will definitely work on it soon.
-
 You can contribute in various ways: by identifying and reporting issues, submitting pull requests on GitHub, or by showing support through a donation using the Bitcoin wallet address provided below.
 
 ## Donate

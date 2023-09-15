@@ -89,6 +89,48 @@ mixin _$WalletProvider on _WalletProvider, Store {
     });
   }
 
+  late final _$generateMnemonicAsyncAction =
+      AsyncAction('_WalletProvider.generateMnemonic', context: context);
+
+  @override
+  Future generateMnemonic() {
+    return _$generateMnemonicAsyncAction.run(() => super.generateMnemonic());
+  }
+
+  late final _$getDescriptorsAsyncAction =
+      AsyncAction('_WalletProvider.getDescriptors', context: context);
+
+  @override
+  Future<List<Descriptor>> getDescriptors(String mnemonicStr) {
+    return _$getDescriptorsAsyncAction
+        .run(() => super.getDescriptors(mnemonicStr));
+  }
+
+  late final _$createOrRestoreWalletAsyncAction =
+      AsyncAction('_WalletProvider.createOrRestoreWallet', context: context);
+
+  @override
+  Future createOrRestoreWallet({required String mnemonic}) {
+    return _$createOrRestoreWalletAsyncAction
+        .run(() => super.createOrRestoreWallet(mnemonic: mnemonic));
+  }
+
+  late final _$getNewAddressAsyncAction =
+      AsyncAction('_WalletProvider.getNewAddress', context: context);
+
+  @override
+  Future getNewAddress() {
+    return _$getNewAddressAsyncAction.run(() => super.getNewAddress());
+  }
+
+  late final _$blockchainInitAsyncAction =
+      AsyncAction('_WalletProvider.blockchainInit', context: context);
+
+  @override
+  Future blockchainInit() {
+    return _$blockchainInitAsyncAction.run(() => super.blockchainInit());
+  }
+
   late final _$getBlockchainHeightAsyncAction =
       AsyncAction('_WalletProvider.getBlockchainHeight', context: context);
 
@@ -130,48 +172,6 @@ mixin _$WalletProvider on _WalletProvider, Store {
       {required dynamic addressStr, required int amount, required double fee}) {
     return _$sendTxAsyncAction.run(
         () => super.sendTx(addressStr: addressStr, amount: amount, fee: fee));
-  }
-
-  late final _$generateMnemonicAsyncAction =
-      AsyncAction('_WalletProvider.generateMnemonic', context: context);
-
-  @override
-  Future generateMnemonic() {
-    return _$generateMnemonicAsyncAction.run(() => super.generateMnemonic());
-  }
-
-  late final _$getDescriptorsAsyncAction =
-      AsyncAction('_WalletProvider.getDescriptors', context: context);
-
-  @override
-  Future<List<Descriptor>> getDescriptors(String mnemonicStr) {
-    return _$getDescriptorsAsyncAction
-        .run(() => super.getDescriptors(mnemonicStr));
-  }
-
-  late final _$blockchainInitAsyncAction =
-      AsyncAction('_WalletProvider.blockchainInit', context: context);
-
-  @override
-  Future blockchainInit() {
-    return _$blockchainInitAsyncAction.run(() => super.blockchainInit());
-  }
-
-  late final _$getNewAddressAsyncAction =
-      AsyncAction('_WalletProvider.getNewAddress', context: context);
-
-  @override
-  Future getNewAddress() {
-    return _$getNewAddressAsyncAction.run(() => super.getNewAddress());
-  }
-
-  late final _$createOrRestoreWalletAsyncAction =
-      AsyncAction('_WalletProvider.createOrRestoreWallet', context: context);
-
-  @override
-  Future createOrRestoreWallet({required String mnemonic}) {
-    return _$createOrRestoreWalletAsyncAction
-        .run(() => super.createOrRestoreWallet(mnemonic: mnemonic));
   }
 
   @override

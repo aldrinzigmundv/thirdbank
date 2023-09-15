@@ -27,6 +27,76 @@ abstract class _WalletProvider with Store {
   late Blockchain blockchain;
 
   @action
+  generateMnemonic() async {
+    var res = await Mnemonic.create(WordCount.Words24);
+    mnemonic = res.asString();
+  }
+
+  @action
+  Future<List<Descriptor>> getDescriptors(String mnemonicStr) async {
+    final descriptors = <Descriptor>[];
+    try {
+      for (var e in [KeychainKind.External, KeychainKind.Internal]) {
+        final mnemonic = await Mnemonic.fromString(mnemonicStr);
+        final descriptorSecretKey = await DescriptorSecretKey.create(
+          network: Network.Bitcoin,
+          mnemonic: mnemonic,
+        );
+        final descriptor = await Descriptor.newBip84(
+            secretKey: descriptorSecretKey,
+            network: Network.Bitcoin,
+            keychain: e);
+        descriptors.add(descriptor);
+      }
+      return descriptors;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @action
+  createOrRestoreWallet({required String mnemonic}) async {
+    try {
+      final descriptors = await getDescriptors(mnemonic);
+      await blockchainInit();
+      final res = await Wallet.create(
+          descriptor: descriptors[0],
+          changeDescriptor: descriptors[1],
+          network: Network.Bitcoin,
+          databaseConfig: const DatabaseConfig.memory());
+      wallet = res;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @action
+  getNewAddress() async {
+    try {
+      final res = await wallet.getAddress(addressIndex: const AddressIndex());
+      walletAddress = res.address;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @action
+  blockchainInit() async {
+    try {
+      blockchain = await Blockchain.create(
+          config: const BlockchainConfig.electrum(
+              config: ElectrumConfig(
+                  stopGap: 10,
+                  timeout: 5,
+                  retry: 5,
+                  url: "ssl://electrum.blockstream.info:60002",
+                  validateDomain: false)));
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @action
   getBlockchainHeight() async {
     int height = await blockchain.getHeight();
     blockchainHeight = height;
@@ -77,76 +147,6 @@ abstract class _WalletProvider with Store {
       final sbt = await wallet.sign(psbt: txBuilderResult.psbt);
       final tx = await sbt.extractTx();
       await blockchain.broadcast(tx);
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @action
-  generateMnemonic() async {
-    var res = await Mnemonic.create(WordCount.Words24);
-    mnemonic = res.asString();
-  }
-
-  @action
-  Future<List<Descriptor>> getDescriptors(String mnemonicStr) async {
-    final descriptors = <Descriptor>[];
-    try {
-      for (var e in [KeychainKind.External, KeychainKind.Internal]) {
-        final mnemonic = await Mnemonic.fromString(mnemonicStr);
-        final descriptorSecretKey = await DescriptorSecretKey.create(
-          network: Network.Bitcoin,
-          mnemonic: mnemonic,
-        );
-        final descriptor = await Descriptor.newBip84(
-            secretKey: descriptorSecretKey,
-            network: Network.Bitcoin,
-            keychain: e);
-        descriptors.add(descriptor);
-      }
-      return descriptors;
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @action
-  blockchainInit() async {
-    try {
-      blockchain = await Blockchain.create(
-          config: const BlockchainConfig.electrum(
-              config: ElectrumConfig(
-                  stopGap: 10,
-                  timeout: 5,
-                  retry: 5,
-                  url: "ssl://electrum.blockstream.info:60002",
-                  validateDomain: false)));
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @action
-  getNewAddress() async {
-    try {
-      final res = await wallet.getAddress(addressIndex: const AddressIndex());
-      walletAddress = res.address;
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @action
-  createOrRestoreWallet({required String mnemonic}) async {
-    try {
-      final descriptors = await getDescriptors(mnemonic);
-      await blockchainInit();
-      final res = await Wallet.create(
-          descriptor: descriptors[0],
-          changeDescriptor: descriptors[1],
-          network: Network.Bitcoin,
-          databaseConfig: const DatabaseConfig.memory());
-      wallet = res;
     } catch (_) {
       rethrow;
     }

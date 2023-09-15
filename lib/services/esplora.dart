@@ -30,6 +30,7 @@ abstract class _EsploraProvider with Store {
           await get(Uri.parse('https://blockstream.info/api/fee-estimates'));
       Map data = jsonDecode(response.body);
 
+      if (response.statusCode == 200) {
       //asap transactions
       emergency = data['1'] * 2.0;
 
@@ -44,6 +45,9 @@ abstract class _EsploraProvider with Store {
 
       //7 days
       superslow = data['1008'];
+      } else {
+        throw Exception("Getting estimated fees is not successful.");
+      }
     } on Exception catch (_) {
       rethrow;
     }

@@ -52,7 +52,7 @@ class TransactionConfirmationPage extends StatelessWidget {
   showError(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text(
-          "Failed sending Bitcoin. Please, check your internet connection or balance."),
+          "Failed sending Bitcoin. Please, check your balance or internet connection."),
       duration: Duration(seconds: 2),
     ));
   }

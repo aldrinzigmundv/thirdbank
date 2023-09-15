@@ -27,7 +27,7 @@ abstract class _WalletProvider with Store {
   late Blockchain blockchain;
 
   @action
-  getBlockchainHeight() async{
+  getBlockchainHeight() async {
     int height = await blockchain.getHeight();
     blockchainHeight = height;
   }
@@ -36,7 +36,6 @@ abstract class _WalletProvider with Store {
   syncWallet() async {
     balanceHolder = 'Please wait...';
     wallet.sync(blockchain);
-
   }
 
   @action
@@ -65,7 +64,8 @@ abstract class _WalletProvider with Store {
   }
 
   @action
-  sendTx({required addressStr, required int amount, required double fee}) async {
+  sendTx(
+      {required addressStr, required int amount, required double fee}) async {
     try {
       final txBuilder = TxBuilder();
       final address = await Address.create(address: addressStr);
@@ -129,17 +129,15 @@ abstract class _WalletProvider with Store {
   @action
   getNewAddress() async {
     try {
-    final res = await wallet.getAddress(addressIndex: const AddressIndex());
-    walletAddress = res.address;
+      final res = await wallet.getAddress(addressIndex: const AddressIndex());
+      walletAddress = res.address;
     } catch (_) {
       rethrow;
     }
   }
 
   @action
-  createOrRestoreWallet(
-      {required String mnemonic,
-      required String path}) async {
+  createOrRestoreWallet({required String mnemonic}) async {
     try {
       final descriptors = await getDescriptors(mnemonic);
       await blockchainInit();

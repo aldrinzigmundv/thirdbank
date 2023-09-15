@@ -169,10 +169,9 @@ mixin _$WalletProvider on _WalletProvider, Store {
       AsyncAction('_WalletProvider.createOrRestoreWallet', context: context);
 
   @override
-  Future createOrRestoreWallet(
-      {required String mnemonic, required String path}) {
+  Future createOrRestoreWallet({required String mnemonic}) {
     return _$createOrRestoreWalletAsyncAction
-        .run(() => super.createOrRestoreWallet(mnemonic: mnemonic, path: path));
+        .run(() => super.createOrRestoreWallet(mnemonic: mnemonic));
   }
 
   @override

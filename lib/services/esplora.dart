@@ -8,7 +8,6 @@ part 'esplora.g.dart';
 class EsploraProvider = _EsploraProvider with _$EsploraProvider;
 
 abstract class _EsploraProvider with Store {
-
   @observable
   double emergency = 0.0;
 
@@ -25,10 +24,10 @@ abstract class _EsploraProvider with Store {
   double superslow = 0.0;
 
   @action
-  getFees ()  async {
-    try{
-      Response response = await get(Uri.parse('https://blockstream.info/api/fee-estimates')
-      );
+  getFees() async {
+    try {
+      Response response =
+          await get(Uri.parse('https://blockstream.info/api/fee-estimates'));
       Map data = jsonDecode(response.body);
 
       //asap transactions
@@ -45,15 +44,13 @@ abstract class _EsploraProvider with Store {
 
       //7 days
       superslow = data['1008'];
-
-    }
-    on Exception catch (_) {
+    } on Exception catch (_) {
       rethrow;
     }
   }
 
   @action
-  double getFee (String speed) {
+  double getFee(String speed) {
     if (speed == 'Emergency') {
       return emergency;
     } else if (speed == 'Fast') {
@@ -67,6 +64,5 @@ abstract class _EsploraProvider with Store {
     } else {
       return medium;
     }
-    
   }
 }

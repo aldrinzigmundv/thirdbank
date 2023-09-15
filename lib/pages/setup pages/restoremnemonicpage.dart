@@ -3,22 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:thirdbank/services/wallet.dart';
 import 'package:thirdbank/services/storage.dart';
 import 'package:thirdbank/services/authentication.dart';
-import 'package:thirdbank/pages/home.dart';
-import 'package:thirdbank/pages/setup%20pages/authenticationquestionpage.dart';
+import 'package:thirdbank/services/routing.dart';
 
 class RestoreMnemonicPage extends StatefulWidget {
-  RestoreMnemonicPage({super.key, required this.wallet, required this.storage});
+  const RestoreMnemonicPage(
+      {super.key, required this.wallet, required this.storage});
 
   final WalletProvider wallet;
   final StorageProvider storage;
 
   @override
-  State<RestoreMnemonicPage> createState() =>
-      _RestoreMnemonicPageState(wallet, storage);
+  State<RestoreMnemonicPage> createState() => _RestoreMnemonicPageState();
 }
 
 class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
-  _RestoreMnemonicPageState(this.wallet, this.storage);
+  _RestoreMnemonicPageState();
 
   late WalletProvider wallet;
   late StorageProvider storage;
@@ -41,8 +40,7 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
         duration: Duration(seconds: 2),
       ));
       try {
-        await wallet.createOrRestoreWallet(
-            mnemonic: _mnemonic.text, path: "m/84'/0'/0'");
+        await wallet.createOrRestoreWallet(mnemonic: _mnemonic.text);
         await storage.write(key: "mnemonic", value: _mnemonic.text);
         wallet.mnemonic = "";
         await wallet.getNewAddress();
@@ -62,31 +60,15 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
     if (!localAuthAvailable) {
       await storage.write(key: "setupdone", value: "true");
       await storage.write(key: "lock", value: "false");
-      goStraightToHome();
+      if (context.mounted) {
+        goToHomePage(context: context, wallet: wallet, storage: storage);
+      }
     } else {
-      goToAuthenticationQuestionPage();
+      if (context.mounted) {
+        goToAuthenticationQuestionPage(
+            context: context, wallet: wallet, storage: storage);
+      }
     }
-  }
-
-  goStraightToHome() async {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Home(
-                  wallet: wallet,
-                  storage: storage,
-                )),
-        (Route<dynamic> route) => false);
-  }
-
-  goToAuthenticationQuestionPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AuthenticationQuestionPage(
-                  wallet: wallet,
-                  storage: storage,
-                )));
   }
 
   showFailedRestoringWalletError() {
@@ -102,6 +84,13 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
       content: Text("Failed restoring wallet. Please, check passphrase."),
       duration: Duration(seconds: 2),
     ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    wallet = widget.wallet;
+    storage = widget.storage;
   }
 
   @override

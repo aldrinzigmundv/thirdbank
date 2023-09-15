@@ -26,10 +26,14 @@ class TransactionConfirmationPage extends StatelessWidget {
       final finalFee = esploraProvider.getFee(format.formatSpeed(fee));
       wallet.sendTx(
           addressStr: address, amount: int.parse(amount), fee: finalFee);
-      showTransactionSentMessage(context);
-      goBackTwice(context);
+      if (context.mounted) {
+        showTransactionSentMessage(context);
+        goBackTwice(context);
+      }
     } catch (_) {
-      showError(context);
+      if (context.mounted) {
+        showError(context);
+      }
     }
   }
 

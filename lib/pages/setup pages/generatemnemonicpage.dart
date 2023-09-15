@@ -6,8 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:thirdbank/services/storage.dart';
 import 'package:thirdbank/services/wallet.dart';
 import 'package:thirdbank/services/authentication.dart';
-import 'package:thirdbank/pages/home.dart';
-import 'package:thirdbank/pages/setup%20pages/authenticationquestionpage.dart';
+import 'package:thirdbank/services/routing.dart';
 
 class GenerateMnemonicPage extends StatefulWidget {
   const GenerateMnemonicPage(
@@ -17,12 +16,11 @@ class GenerateMnemonicPage extends StatefulWidget {
   final StorageProvider storage;
 
   @override
-  State<GenerateMnemonicPage> createState() =>
-      _GenerateMnemonicPageState(wallet, storage);
+  State<GenerateMnemonicPage> createState() => _GenerateMnemonicPageState();
 }
 
 class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
-  _GenerateMnemonicPageState(this.wallet, this.storage);
+  _GenerateMnemonicPageState();
 
   late WalletProvider wallet;
   late StorageProvider storage;
@@ -35,8 +33,7 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
       duration: Duration(seconds: 2),
     ));
     try {
-      await wallet.createOrRestoreWallet(
-          mnemonic: wallet.mnemonic, path: "m/84'/0'/0'");
+      await wallet.createOrRestoreWallet(mnemonic: wallet.mnemonic);
       await storage.write(key: "mnemonic", value: wallet.mnemonic);
       wallet.mnemonic = "";
       await wallet.getNewAddress();
@@ -53,37 +50,21 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
     if (!localAuthAvailable) {
       await storage.write(key: "setupdone", value: "true");
       await storage.write(key: "lock", value: "false");
-      goStraightToHome();
+      if (context.mounted) {
+        goToHomePage(context: context, wallet: wallet, storage: storage);
+      }
     } else {
-      goToAuthenticationQuestionPage();
+      if (context.mounted) {
+        goToAuthenticationQuestionPage(
+            context: context, wallet: wallet, storage: storage);
+      }
     }
-  }
-
-  goStraightToHome() async {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Home(
-                  wallet: wallet,
-                  storage: storage,
-                )),
-        (Route<dynamic> route) => false);
-  }
-
-  goToAuthenticationQuestionPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AuthenticationQuestionPage(
-                  wallet: wallet,
-                  storage: storage,
-                )));
   }
 
   showFailedCreatingWalletError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text(
-          "Something went wrong. Please, check your internet connection."),
+      content:
+          Text("Something went wrong. Please, check your internet connection."),
       duration: Duration(seconds: 2),
     ));
   }
@@ -91,6 +72,8 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
   @override
   void initState() {
     super.initState();
+    wallet = widget.wallet;
+    storage = widget.storage;
     wallet.generateMnemonic();
     authentication.initialize();
   }

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:thirdbank/services/wallet.dart';
 import 'package:thirdbank/services/storage.dart';
-import 'package:thirdbank/pages/setup%20pages/generatemnemonicpage.dart';
-import 'package:thirdbank/pages/setup%20pages/restoremnemonicpage.dart';
+import 'package:thirdbank/services/routing.dart';
 
 class MnemonicQuestionPage extends StatelessWidget {
   const MnemonicQuestionPage(
@@ -11,21 +10,6 @@ class MnemonicQuestionPage extends StatelessWidget {
 
   final WalletProvider wallet;
   final StorageProvider storage;
-
-  goToGenerateMnemonicPage(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => GenerateMnemonicPage(
-                  wallet: wallet,
-                  storage: storage,
-                )));
-  }
-
-  goToRestoreMnemonicPage(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RestoreMnemonicPage(wallet: wallet, storage: storage,)));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +37,8 @@ class MnemonicQuestionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: ElevatedButton(
-                  onPressed: () => goToGenerateMnemonicPage(context),
+                  onPressed: () => goToGenerateMnemonicPage(
+                      context: context, wallet: wallet, storage: storage),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.yellowAccent),
@@ -70,7 +55,8 @@ class MnemonicQuestionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: ElevatedButton(
-                  onPressed: () => goToRestoreMnemonicPage(context),
+                  onPressed: () => goToRestoreMnemonicPage(
+                      context: context, wallet: wallet, storage: storage),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.yellowAccent),

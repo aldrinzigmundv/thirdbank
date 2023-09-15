@@ -1,17 +1,13 @@
-import 'dart:ffi';
-
 import 'package:mobx/mobx.dart';
 
 import 'package:intl/intl.dart';
 
 part 'formatting.g.dart';
 
-class FormattingProvider = _FormattingProvider
-    with _$FormattingProvider;
+class FormattingProvider = _FormattingProvider with _$FormattingProvider;
 
 abstract class _FormattingProvider with Store {
-
-  String formatTimeStamp (int? timestamp) {
+  String formatTimeStamp(int? timestamp) {
     int result = timestamp ?? 0;
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(result * 1000);
     String formatted = DateFormat.yMMMMd().add_jm().format(dateTime);
@@ -22,7 +18,8 @@ abstract class _FormattingProvider with Store {
     }
   }
 
-  formatConfirmations ({required int blockchainHeight, required int transactionHeight}) {
+  formatConfirmations(
+      {required int blockchainHeight, required int transactionHeight}) {
     int difference = blockchainHeight - transactionHeight;
     if (difference == blockchainHeight || difference > blockchainHeight) {
       return 0;
@@ -31,15 +28,15 @@ abstract class _FormattingProvider with Store {
     }
   }
 
-  int formatBlockHeight (int? blockheight) {
+  int formatBlockHeight(int? blockheight) {
     return blockheight ?? 0;
   }
 
-  int getFee (int? fee) {
+  int getFee(int? fee) {
     return fee ?? 0;
   }
 
-  String formatFee (int? fee) {
+  String formatFee(int? fee) {
     int finalFee = fee ?? 0;
     if (finalFee == 0) {
       return "Pending";
@@ -48,7 +45,7 @@ abstract class _FormattingProvider with Store {
     }
   }
 
-  String formatSpeed (String speed) {
+  String formatSpeed(String speed) {
     if (speed == 'Highest Fee, Settles Fastest (<10 minutes)') {
       return 'Emergency';
     } else if (speed == 'Higher Fee, Settles Faster (around 10 minutes)') {

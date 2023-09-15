@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thirdbank/services/wallet.dart';
 import 'package:thirdbank/services/storage.dart';
 import 'package:thirdbank/services/authentication.dart';
-import 'package:thirdbank/pages/home.dart';
+import 'package:thirdbank/services/routing.dart';
 
 class AuthenticationQuestionPage extends StatefulWidget {
   const AuthenticationQuestionPage(
@@ -14,44 +14,39 @@ class AuthenticationQuestionPage extends StatefulWidget {
 
   @override
   State<AuthenticationQuestionPage> createState() =>
-      _AuthenticationQuestionPageState(wallet, storage);
+      _AuthenticationQuestionPageState();
 }
 
 class _AuthenticationQuestionPageState
     extends State<AuthenticationQuestionPage> {
-  _AuthenticationQuestionPageState(this.wallet, this.storage);
+  _AuthenticationQuestionPageState();
 
-  final WalletProvider wallet;
-  final StorageProvider storage;
+  late WalletProvider wallet;
+  late StorageProvider storage;
 
   final AuthenticationProvider authentication = AuthenticationProvider();
 
   addLocalAuth() async {
     await storage.write(key: "setupdone", value: "true");
     await storage.write(key: "lock", value: "true");
-    goToHome();
+    if (context.mounted) {
+      goToHomePage(context: context, wallet: wallet, storage: storage);
+    }
   }
 
   noLocalAuth() async {
     await storage.write(key: "setupdone", value: "true");
     await storage.write(key: "lock", value: "false");
-    goToHome();
-  }
-
-  goToHome () {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Home(
-                  wallet: wallet,
-                  storage: storage,
-                )),
-        (Route<dynamic> route) => false);
+    if (context.mounted) {
+      goToHomePage(context: context, wallet: wallet, storage: storage);
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    wallet = widget.wallet;
+    storage = widget.storage;
   }
 
   @override

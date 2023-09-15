@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thirdbank/services/wallet.dart';
 import 'package:thirdbank/services/storage.dart';
 import 'package:thirdbank/services/authentication.dart';
-import 'package:thirdbank/pages/home.dart';
-import 'package:thirdbank/pages/setup%20pages/mnemonicquestionpage.dart';
+import 'package:thirdbank/services/routing.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -35,52 +34,36 @@ class _LoadingPageState extends State<LoadingPage> {
           await storage.read(key: "lock") == "false") {
         startWallet();
       } else {
-        goToMnemonicQuestionPage();
+        if (context.mounted) {
+          goToMnemonicQuestionPage(
+              context: context, wallet: wallet, storage: storage);
+        }
       }
     });
   }
 
   void startWallet() async {
     try {
-    wallet.mnemonic = await storage.read(key: "mnemonic");
-    wallet.walletAddress = await storage.read(key: "address");
-    await wallet.createOrRestoreWallet(
-        mnemonic: wallet.mnemonic, path: "m/84'/0'/0'");
-    wallet.mnemonic = "";
-    wallet.getBlockchainHeight();
-    goToHome();
+      wallet.mnemonic = await storage.read(key: "mnemonic");
+      wallet.walletAddress = await storage.read(key: "address");
+      await wallet.createOrRestoreWallet(mnemonic: wallet.mnemonic);
+      wallet.mnemonic = "";
+      wallet.getBlockchainHeight();
+      if (context.mounted) {
+        goToHomePage(context: context, wallet: wallet, storage: storage);
+      }
     } catch (_) {
       setState(() {
-      _loadingpagetext =
-        "Something went wrong. Either phone authentication failed or bad internet connection...";
-    });
+        _loadingpagetext =
+            "Something went wrong. Either phone authentication failed or bad internet connection...";
+      });
     }
-  }
-
-  goToHome () {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Home(
-                  wallet: wallet,
-                  storage: storage,
-                )));
-  }
-
-  void goToMnemonicQuestionPage() {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MnemonicQuestionPage(
-                  wallet: wallet,
-                  storage: storage,
-                )));
   }
 
   displayError() {
     setState(() {
       _loadingpagetext =
-        "Something went wrong. Either phone authentication failed or bad internet connection...";
+          "Something went wrong. Either phone authentication failed or bad internet connection...";
     });
   }
 
@@ -97,9 +80,28 @@ class _LoadingPageState extends State<LoadingPage> {
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Image.asset("assets/icons/icon.png"),
+          const Padding(
+            padding: EdgeInsets.all(9.0),
+            child: Text(
+              'Third Bank',
+              style: TextStyle(
+                fontSize: 27.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(
+            height: 27.0,
+          ),
           Padding(
             padding: const EdgeInsets.all(9.0),
-            child: Text(_loadingpagetext, style: const TextStyle(fontSize: 27.0,), textAlign: TextAlign.center,),
+            child: Text(
+              _loadingpagetext,
+              style: const TextStyle(
+                fontSize: 18.0,
+              ),
+              textAlign: TextAlign.center,
+            ),
           )
         ]),
       ),

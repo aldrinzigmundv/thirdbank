@@ -5,19 +5,19 @@ import 'package:flutter/services.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 
 import 'package:thirdbank/services/wallet.dart';
-import 'package:thirdbank/pages/transactionconfirmationpage.dart';
+import 'package:thirdbank/services/routing.dart';
 
 class SendBitcoinPage extends StatefulWidget {
-  SendBitcoinPage({super.key, required this.wallet});
+  const SendBitcoinPage({super.key, required this.wallet});
 
   final WalletProvider wallet;
 
   @override
-  State<SendBitcoinPage> createState() => _SendPage(wallet);
+  State<SendBitcoinPage> createState() => _SendPage();
 }
 
 class _SendPage extends State<SendBitcoinPage> {
-  _SendPage(this.wallet);
+  _SendPage();
 
   late WalletProvider wallet;
 
@@ -27,7 +27,8 @@ class _SendPage extends State<SendBitcoinPage> {
   String _scannedQRAddress = "";
   String _scanQRButtonText = "Scan Recipient's QR Code";
 
-  String _speedDropdownValue = 'Moderate Fee, Moderate Settlement (around 1 hour)';
+  String _speedDropdownValue =
+      'Moderate Fee, Moderate Settlement (around 1 hour)';
   final List<String> _speeds = <String>[
     'Highest Fee, Settles Fastest (<10 minutes)',
     'Higher Fee, Settles Faster (around 10 minutes)',
@@ -83,44 +84,45 @@ class _SendPage extends State<SendBitcoinPage> {
   processInputs() async {
     if (await checkRequiredFields()) {
       if (int.parse(_sendAmount.text) >= 5460) {
-      String chosenAddress = '';
-      if (_scannedQRAddress != "") {
-        chosenAddress = _scannedQRAddress;
-      } else {
-        chosenAddress = _destinationAddress.text;
-      }
-      final cleanedDestinationAddress = cleanAddress(chosenAddress);
-      goToTransactionConfirmationPage(cleanedDestinationAddress);
+        String chosenAddress = '';
+        if (_scannedQRAddress != "") {
+          chosenAddress = _scannedQRAddress;
+        } else {
+          chosenAddress = _destinationAddress.text;
+        }
+        final cleanedDestinationAddress = cleanAddress(chosenAddress);
+        if (context.mounted) {
+          goToTransactionConfirmationPage(
+              context: context,
+              wallet: wallet,
+              sendAmount: _sendAmount.text,
+              cleanedDestinationAddress: cleanedDestinationAddress,
+              speedDropdownValue: _speedDropdownValue);
+        }
       } else {
         showMinimumAmountError();
       }
     }
   }
 
-  goToTransactionConfirmationPage (String cleanedDestinationAddress) {
-    Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TransactionConfirmationPage(
-                    wallet: wallet,
-                    amount: _sendAmount.text,
-                    address: cleanedDestinationAddress,
-                    fee: _speedDropdownValue,
-                  )));
+  showQRScannerError() {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Failed to start QR scanner."),
+      duration: Duration(seconds: 2),
+    ));
   }
 
-  showQRScannerError () {
+  showMinimumAmountError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Failed to start QR scanner."),
-        duration: Duration(seconds: 2),
-      ));
+      content: Text("Minimum amount is 5460 sats."),
+      duration: Duration(seconds: 2),
+    ));
   }
 
-  showMinimumAmountError () {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Minimum amount is 5460 sats."),
-        duration: Duration(seconds: 2),
-      ));
+  @override
+  void initState() {
+    super.initState();
+    wallet = widget.wallet;
   }
 
   @override
@@ -141,7 +143,7 @@ class _SendPage extends State<SendBitcoinPage> {
         child: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                Padding(
+            Padding(
               padding: const EdgeInsets.all(9.0),
               child: DropdownMenu(
                 width: MediaQuery.of(context).size.width - 18.0,
@@ -152,11 +154,11 @@ class _SendPage extends State<SendBitcoinPage> {
                     label: value,
                   );
                 }).toList(),
-                onSelected: (String? newValue) { 
-                setState(() {
-                  _speedDropdownValue = newValue!;
-                });
-              },
+                onSelected: (String? newValue) {
+                  setState(() {
+                    _speedDropdownValue = newValue!;
+                  });
+                },
               ),
             ),
             const SizedBox(

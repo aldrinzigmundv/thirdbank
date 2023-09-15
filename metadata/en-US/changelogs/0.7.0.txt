@@ -1,1 +1,2 @@
 * Minor UI redesign for consistency
+* Resolved crashes caused by unhandled exceptions

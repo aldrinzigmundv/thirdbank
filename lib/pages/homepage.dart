@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           _transactionAreaMessage = 'Tap on a transaction to get more info.';
         });
       }
-    } on Exception catch (_) {
+    } catch (_) {
       showFailedRefreshingWalletError();
     }
   }

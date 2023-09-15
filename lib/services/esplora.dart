@@ -48,7 +48,7 @@ abstract class _EsploraProvider with Store {
       } else {
         throw Exception("Getting estimated fees is not successful.");
       }
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
     }
   }

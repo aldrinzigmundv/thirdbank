@@ -90,11 +90,10 @@ class _LoadingPageState extends State<LoadingPage> {
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(
-            height: 27.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(9.0),
+        ]),
+      ),
+      bottomNavigationBar: Padding(
+            padding: const EdgeInsets.fromLTRB(9.0, 9.0, 9.0, 36.0),
             child: Text(
               _loadingpagetext,
               style: const TextStyle(
@@ -103,8 +102,6 @@ class _LoadingPageState extends State<LoadingPage> {
               textAlign: TextAlign.center,
             ),
           )
-        ]),
-      ),
     );
   }
 }

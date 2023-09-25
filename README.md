@@ -10,7 +10,7 @@ or download the latest APK from the [Releases Section](https://github.com/aldrin
 
 ## What is Third Bank?
 
-A free and open-source experimental non-custodial Bitcoin wallet that focuses on simplicity and ease of use.
+A free and open-source experimental non-custodial Bitcoin wallet with a strong emphasis on simplicity and ease of use.
 
 ## Features
 * Free, open-source and non-custodial

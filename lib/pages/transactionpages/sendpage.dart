@@ -38,7 +38,7 @@ class _SendPage extends State<SendBitcoinPage> {
   ];
 
   scanQRCode() async {
-    var result;
+    ScanResult result;
     try {
       result = await BarcodeScanner.scan();
       _scannedQRAddress = result.rawContent;
@@ -117,6 +117,13 @@ class _SendPage extends State<SendBitcoinPage> {
       content: Text("Minimum amount is 5460 sats."),
       duration: Duration(seconds: 2),
     ));
+  }
+
+  @override
+  void dispose() {
+    _sendAmount.dispose();
+    _destinationAddress.dispose();
+    super.dispose();
   }
 
   @override

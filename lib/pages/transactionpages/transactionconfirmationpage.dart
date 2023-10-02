@@ -75,87 +75,23 @@ class TransactionConfirmationPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(18.0),
-                child: Text(
-                  'Transaction Fee',
-                  style: TextStyle(fontSize: 19.9),
-                  textAlign: TextAlign.center,
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(9.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.circular(9.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(9.0, 18.0, 9.0, 18.0),
-                    child: Text(
-                      fee,
-                      style: const TextStyle(
-                        fontSize: 19.9,
-                        wordSpacing: 2.0,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+                child: Card(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Padding(padding: EdgeInsets.all(9.0), child: Text('Transaction Fee', style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold))),
+                        Padding(padding: const EdgeInsets.all(9.0), child: Text(fee, style: const TextStyle(fontSize: 21.0))),
+                        const SizedBox(height: 18.0,),
+                        const Padding(padding: EdgeInsets.all(9.0), child: Text('Amount to Send', style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold))),
+                        Padding(padding: const EdgeInsets.all(9.0), child: Text('$amount sats', style: const TextStyle(fontSize: 21.0))),
+                        const SizedBox(height: 18.0,),
+                        const Padding(padding: EdgeInsets.all(9.0), child: Text('Destination Address', style: TextStyle(fontSize: 21.0, fontWeight: FontWeight.bold))),
+                        Padding(padding: const EdgeInsets.all(9.0), child: Text(address, style: const TextStyle(fontSize: 21.0))),
+                      ]),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(18.0),
-                child: Text(
-                  'Amount To Send',
-                  style: TextStyle(fontSize: 19.9),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.circular(9.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(9.0, 18.0, 9.0, 18.0),
-                    child: Text(
-                      '$amount sats',
-                      style: const TextStyle(
-                        fontSize: 19.9,
-                        wordSpacing: 2.0,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(18.0),
-                child: Text(
-                  'Receiving Address',
-                  style: TextStyle(fontSize: 19.9),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.circular(9.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(9.0, 18.0, 9.0, 18.0),
-                    child: Text(
-                      address,
-                      style: const TextStyle(fontSize: 19.9),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
+              )
             ],
           ),
         ),

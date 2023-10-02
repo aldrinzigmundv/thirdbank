@@ -87,6 +87,12 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
   }
 
   @override
+  void dispose() {
+    _mnemonic.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     wallet = widget.wallet;

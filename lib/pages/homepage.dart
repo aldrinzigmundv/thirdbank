@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                         wallet.transactions[index].confirmationTime?.height);
                     if (wallet.transactions[index].sent == 0) {
                       int finalFee =
-                          format.getFee(wallet.transactions[index]?.fee);
+                          format.getFee(wallet.transactions[index].fee);
                       return GestureDetector(
                         onTap: () =>
                             showTransactionInfo(index, blockHeight, finalFee),
@@ -242,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else {
                       int finalFee =
-                          format.getFee(wallet.transactions[index]?.fee);
+                          format.getFee(wallet.transactions[index].fee);
                       return GestureDetector(
                         onTap: () =>
                             showTransactionInfo(index, blockHeight, finalFee),

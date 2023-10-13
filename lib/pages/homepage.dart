@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   String _transactionAreaMessage = "Your transactions will appear here.";
 
-  refreshWallet() async {
+  _refreshWallet() async {
     try {
       await wallet.syncWallet();
       await wallet.getBlockchainHeight();
@@ -40,11 +40,11 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (_) {
-      showFailedRefreshingWalletError();
+      _showFailedRefreshingWalletError();
     }
   }
 
-  showTransactionInfo(int index, int blockHeight, int finalFee) {
+  _showTransactionInfo(int index, int blockHeight, int finalFee) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  showFailedRefreshingWalletError() {
+  _showFailedRefreshingWalletError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content:
           Text("Something went wrong. Please, check your internet connection."),
@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     wallet = widget.wallet;
     storage = widget.storage;
-    refreshWallet();
+    _refreshWallet();
   }
 
   @override
@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(9.0),
               child: ElevatedButton(
-                onPressed: () => refreshWallet(),
+                onPressed: () => _refreshWallet(),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.yellowAccent),
@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                           format.getFee(wallet.transactions[index].fee);
                       return GestureDetector(
                         onTap: () =>
-                            showTransactionInfo(index, blockHeight, finalFee),
+                            _showTransactionInfo(index, blockHeight, finalFee),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 9.0),
@@ -245,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                           format.getFee(wallet.transactions[index].fee);
                       return GestureDetector(
                         onTap: () =>
-                            showTransactionInfo(index, blockHeight, finalFee),
+                            _showTransactionInfo(index, blockHeight, finalFee),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 9.0),

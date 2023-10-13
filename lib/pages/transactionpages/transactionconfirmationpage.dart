@@ -20,36 +20,36 @@ class TransactionConfirmationPage extends StatelessWidget {
   final String address;
   final String fee;
 
-  sendBitcoin(BuildContext context) async {
+  _sendBitcoin(BuildContext context) async {
     try {
       await esploraProvider.getFees();
       final finalFee = esploraProvider.getFee(format.formatSpeed(fee));
       await wallet.sendTx(
           addressStr: address, amount: int.parse(amount), fee: finalFee);
       if (context.mounted) {
-        showTransactionSentMessage(context);
-        goBackTwice(context);
+        _showTransactionSentMessage(context);
+        _goBackTwice(context);
       }
     } catch (_) {
       if (context.mounted) {
-        showError(context);
+        _showError(context);
       }
     }
   }
 
-  showTransactionSentMessage(BuildContext context) {
+  _showTransactionSentMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Transaction sent to blockchain."),
       duration: Duration(seconds: 2),
     ));
   }
 
-  goBackTwice(context) {
+  _goBackTwice(context) {
     Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 
-  showError(BuildContext context) {
+  _showError(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text(
           "Failed sending Bitcoin. Please, check your balance or internet connection."),
@@ -100,7 +100,7 @@ class TransactionConfirmationPage extends StatelessWidget {
         padding: const EdgeInsets.all(9.0),
         child: ElevatedButton.icon(
           icon: const Icon(Icons.check_circle),
-          onPressed: () => sendBitcoin(context),
+          onPressed: () => _sendBitcoin(context),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.yellowAccent),
               foregroundColor: MaterialStateProperty.all(Colors.black)),

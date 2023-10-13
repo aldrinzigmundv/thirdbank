@@ -19,20 +19,20 @@ class _LoadingPageState extends State<LoadingPage> {
 
   String _loadingpagetext = "Please wait...";
 
-  void startup() async {
+  void _startup() async {
     Future.delayed(const Duration(seconds: 1), () async {
       await storage.initialize();
       await auth.initialize();
       if (await storage.read(key: "setupdone") == "true" &&
           await storage.read(key: "lock") == "true") {
         if (await auth.authenticate()) {
-          startWallet();
+          _startWallet();
         } else {
-          displayError();
+          _displayError();
         }
       } else if (await storage.read(key: "setupdone") == "true" &&
           await storage.read(key: "lock") == "false") {
-        startWallet();
+        _startWallet();
       } else {
         if (context.mounted) {
           goToMnemonicQuestionPage(
@@ -42,7 +42,7 @@ class _LoadingPageState extends State<LoadingPage> {
     });
   }
 
-  void startWallet() async {
+  void _startWallet() async {
     try {
       wallet.mnemonic = await storage.read(key: "mnemonic");
       wallet.walletAddress = await storage.read(key: "address");
@@ -60,7 +60,7 @@ class _LoadingPageState extends State<LoadingPage> {
     }
   }
 
-  displayError() {
+  _displayError() {
     setState(() {
       _loadingpagetext =
           "Something went wrong. Either phone authentication failed or bad internet connection...";
@@ -70,7 +70,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    startup();
+    _startup();
   }
 
   @override

@@ -11,6 +11,15 @@ class MnemonicQuestionPage extends StatelessWidget {
   final WalletProvider wallet;
   final StorageProvider storage;
 
+  _goToGenerateMnemonicPage(context) {
+    goToGenerateMnemonicPage(
+        context: context, wallet: wallet, storage: storage);
+  }
+
+  _goToRestoreMnemonicPage(context) {
+    goToRestoreMnemonicPage(context: context, wallet: wallet, storage: storage);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +46,7 @@ class MnemonicQuestionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: ElevatedButton(
-                  onPressed: () => goToGenerateMnemonicPage(
-                      context: context, wallet: wallet, storage: storage),
+                  onPressed: () => _goToGenerateMnemonicPage(context),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.yellowAccent),
@@ -55,8 +63,7 @@ class MnemonicQuestionPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: ElevatedButton(
-                  onPressed: () => goToRestoreMnemonicPage(
-                      context: context, wallet: wallet, storage: storage),
+                  onPressed: () => _goToRestoreMnemonicPage(context),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.yellowAccent),

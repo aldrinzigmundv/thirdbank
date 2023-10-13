@@ -27,7 +27,11 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
 
   final AuthenticationProvider authentication = AuthenticationProvider();
 
-  proceedWithCreatedMnemonic() async {
+  _regenarateMnemonic() {
+    wallet.generateMnemonic();
+  }
+
+  _proceedWithCreatedMnemonic() async {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Creating Wallet..."),
       duration: Duration(seconds: 2),
@@ -38,13 +42,13 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
       wallet.mnemonic = "";
       await wallet.getNewAddress();
       await storage.write(key: "address", value: wallet.walletAddress);
-      evaluateNextPage();
+      _evaluateNextPage();
     } catch (_) {
-      showFailedCreatingWalletError();
+      _showFailedCreatingWalletError();
     }
   }
 
-  evaluateNextPage() async {
+  _evaluateNextPage() async {
     final localAuthAvailable =
         await authentication.checkAuthenticationAvailability();
     if (!localAuthAvailable) {
@@ -61,7 +65,7 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
     }
   }
 
-  showFailedCreatingWalletError() {
+  _showFailedCreatingWalletError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content:
           Text("Something went wrong. Please, check your internet connection."),
@@ -143,7 +147,7 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
             Padding(
               padding: const EdgeInsets.all(9.0),
               child: ElevatedButton(
-                onPressed: () => proceedWithCreatedMnemonic(),
+                onPressed: () => _proceedWithCreatedMnemonic(),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.yellowAccent),
@@ -159,9 +163,7 @@ class _GenerateMnemonicPageState extends State<GenerateMnemonicPage> {
             Padding(
               padding: const EdgeInsets.all(9.0),
               child: ElevatedButton(
-                onPressed: () {
-                  wallet.generateMnemonic();
-                },
+                onPressed: () => _regenarateMnemonic(),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.yellowAccent),

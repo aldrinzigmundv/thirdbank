@@ -37,21 +37,21 @@ class _SendPage extends State<SendBitcoinPage> {
     'Lowest Fee, Settles Slowest (around 7 days)',
   ];
 
-  scanQRCode() async {
+  _scanQRCode() async {
     ScanResult result;
     try {
       result = await BarcodeScanner.scan();
       _scannedQRAddress = result.rawContent;
       setState(() {
         _scanQRButtonText = "Rescan Recipient's QR Code";
-        _destinationAddress.text = cleanAddress(result.rawContent);
+        _destinationAddress.text = _cleanAddress(result.rawContent);
       });
     } catch (_) {
-      showQRScannerError();
+      _showQRScannerError();
     }
   }
 
-  checkRequiredFields() async {
+  _checkRequiredFields() async {
     if (_sendAmount.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Amount and Bitcoin address required."),
@@ -70,7 +70,7 @@ class _SendPage extends State<SendBitcoinPage> {
     }
   }
 
-  String cleanAddress(String address) {
+  String _cleanAddress(String address) {
     if (address.startsWith('bitcoin:')) {
       address = address.substring('bitcoin:'.length);
     }
@@ -81,8 +81,8 @@ class _SendPage extends State<SendBitcoinPage> {
     return address;
   }
 
-  processInputs() async {
-    if (await checkRequiredFields()) {
+  _processInputs() async {
+    if (await _checkRequiredFields()) {
       if (int.parse(_sendAmount.text) >= 5460) {
         String chosenAddress = '';
         if (_scannedQRAddress != "") {
@@ -90,7 +90,7 @@ class _SendPage extends State<SendBitcoinPage> {
         } else {
           chosenAddress = _destinationAddress.text;
         }
-        final cleanedDestinationAddress = cleanAddress(chosenAddress);
+        final cleanedDestinationAddress = _cleanAddress(chosenAddress);
         if (context.mounted) {
           goToTransactionConfirmationPage(
               context: context,
@@ -100,19 +100,19 @@ class _SendPage extends State<SendBitcoinPage> {
               speedDropdownValue: _speedDropdownValue);
         }
       } else {
-        showMinimumAmountError();
+        _showMinimumAmountError();
       }
     }
   }
 
-  showQRScannerError() {
+  _showQRScannerError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Failed to start QR scanner."),
       duration: Duration(seconds: 2),
     ));
   }
 
-  showMinimumAmountError() {
+  _showMinimumAmountError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Minimum amount is 5460 sats."),
       duration: Duration(seconds: 2),
@@ -202,7 +202,7 @@ class _SendPage extends State<SendBitcoinPage> {
               padding: const EdgeInsets.all(9.0),
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.qr_code_scanner),
-                onPressed: () => scanQRCode(),
+                onPressed: () => _scanQRCode(),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.yellowAccent),
@@ -232,7 +232,7 @@ class _SendPage extends State<SendBitcoinPage> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(9.0),
         child: ElevatedButton(
-          onPressed: () => processInputs(),
+          onPressed: () => _processInputs(),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.yellowAccent),
               foregroundColor: MaterialStateProperty.all(Colors.black)),

@@ -26,7 +26,7 @@ class _AuthenticationQuestionPageState
 
   final AuthenticationProvider authentication = AuthenticationProvider();
 
-  addLocalAuth() async {
+  _addLocalAuth() async {
     await storage.write(key: "setupdone", value: "true");
     await storage.write(key: "lock", value: "true");
     if (context.mounted) {
@@ -34,7 +34,7 @@ class _AuthenticationQuestionPageState
     }
   }
 
-  noLocalAuth() async {
+  _noLocalAuth() async {
     await storage.write(key: "setupdone", value: "true");
     await storage.write(key: "lock", value: "false");
     if (context.mounted) {
@@ -77,7 +77,7 @@ class _AuthenticationQuestionPageState
               Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: ElevatedButton(
-                  onPressed: () => addLocalAuth(),
+                  onPressed: () => _addLocalAuth(),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.yellowAccent),
@@ -93,7 +93,7 @@ class _AuthenticationQuestionPageState
               Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: ElevatedButton(
-                  onPressed: () => noLocalAuth(),
+                  onPressed: () => _noLocalAuth(),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.yellowAccent),

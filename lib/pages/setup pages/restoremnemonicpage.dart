@@ -26,15 +26,15 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
 
   final TextEditingController _mnemonic = TextEditingController();
 
-  bool checkMnemonicLength(String input) {
+  bool _checkMnemonicLength(String input) {
     final List<String> words = input.split(' ');
     final int wordCount = words.length;
 
     return wordCount == 12 || wordCount == 18 || wordCount == 24;
   }
 
-  restoreOldWallet() async {
-    if (checkMnemonicLength(_mnemonic.text)) {
+  _restoreOldWallet() async {
+    if (_checkMnemonicLength(_mnemonic.text)) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Restoring..."),
         duration: Duration(seconds: 2),
@@ -45,16 +45,16 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
         wallet.mnemonic = "";
         await wallet.getNewAddress();
         await storage.write(key: "address", value: wallet.walletAddress);
-        evaluateNextPage();
+        _evaluateNextPage();
       } catch (_) {
-        showFailedRestoringWalletError();
+        _showFailedRestoringWalletError();
       }
     } else {
-      showBadPassphraseError();
+      _showBadPassphraseError();
     }
   }
 
-  evaluateNextPage() async {
+  _evaluateNextPage() async {
     final localAuthAvailable =
         await authentication.checkAuthenticationAvailability();
     if (!localAuthAvailable) {
@@ -71,7 +71,7 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
     }
   }
 
-  showFailedRestoringWalletError() {
+  _showFailedRestoringWalletError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text(
           "Failed restoring wallet. Please, check passphrase or your internet connection."),
@@ -79,7 +79,7 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
     ));
   }
 
-  showBadPassphraseError() {
+  _showBadPassphraseError() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Failed restoring wallet. Please, check passphrase."),
       duration: Duration(seconds: 2),
@@ -142,7 +142,7 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
                 Padding(
                   padding: const EdgeInsets.all(9.0),
                   child: ElevatedButton(
-                    onPressed: () => restoreOldWallet(),
+                    onPressed: () => _restoreOldWallet(),
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.yellowAccent),

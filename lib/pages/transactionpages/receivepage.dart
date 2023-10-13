@@ -19,6 +19,14 @@ class _ReceivePageState extends State<ReceivePage> {
 
   late WalletProvider wallet;
 
+  _copyWalletAddressToClipboard() {
+    Clipboard.setData(ClipboardData(text: wallet.walletAddress));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Wallet address copied to clipboard."),
+            duration: Duration(seconds: 2),
+          ));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,13 +46,7 @@ class _ReceivePageState extends State<ReceivePage> {
             )),
       ),
       body: GestureDetector(
-        onTap: () {
-          Clipboard.setData(ClipboardData(text: wallet.walletAddress));
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Wallet address copied to clipboard."),
-            duration: Duration(seconds: 2),
-          ));
-        },
+        onTap: () => _copyWalletAddressToClipboard(),
         child: Center(
           child: SingleChildScrollView(
             child: Column(

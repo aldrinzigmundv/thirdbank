@@ -8,6 +8,8 @@
 
 or download the latest APK from the [Releases Section](https://github.com/aldrinzigmundv/thirdbank/releases/latest)
 
+**This app is powered by aldrinzigmund.com**
+
 ## What is Third Bank?
 
 A free and open-source experimental non-custodial Bitcoin wallet with a strong emphasis on simplicity and ease of use.

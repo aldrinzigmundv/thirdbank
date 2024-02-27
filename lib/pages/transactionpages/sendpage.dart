@@ -27,14 +27,13 @@ class _SendPage extends State<SendBitcoinPage> {
   String _scannedQRAddress = "";
   String _scanQRButtonText = "Scan Recipient's QR Code";
 
-  String _speedDropdownValue =
-      'Moderate Fee, Moderate Settlement (around 1 hour)';
+  String _speedDropdownValue = 'Moderate Fee (settles around 1 hour)';
   final List<String> _speeds = <String>[
-    'Highest Fee, Settles Fastest (<10 minutes)',
-    'Higher Fee, Settles Faster (around 10 minutes)',
-    'Moderate Fee, Moderate Settlement (around 1 hour)',
-    'Lower Fee, Settles Slower (around 24 hours)',
-    'Lowest Fee, Settles Slowest (around 7 days)',
+    'Highest Fee (settles <10 minutes)',
+    'Higher Fee (settles around 10 minutes)',
+    'Moderate Fee (settles around 1 hour)',
+    'Lower Fee (settles around 24 hours)',
+    'Lowest Fee (settles around 7 days)',
   ];
 
   _scanQRCode() async {
@@ -91,7 +90,7 @@ class _SendPage extends State<SendBitcoinPage> {
           chosenAddress = _destinationAddress.text;
         }
         final cleanedDestinationAddress = _cleanAddress(chosenAddress);
-        if (context.mounted) {
+        if (mounted) {
           goToTransactionConfirmationPage(
               context: context,
               wallet: wallet,

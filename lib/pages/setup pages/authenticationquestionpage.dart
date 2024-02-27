@@ -27,17 +27,21 @@ class _AuthenticationQuestionPageState
   final AuthenticationProvider authentication = AuthenticationProvider();
 
   _addLocalAuth() async {
-    await storage.write(key: "setupdone", value: "true");
-    await storage.write(key: "lock", value: "true");
-    if (context.mounted) {
+    await Future.wait([
+      Future(() => storage.write(key: "setupdone", value: "true")),
+      Future(() => storage.write(key: "lock", value: "true")),
+    ]);
+    if (mounted) {
       goToHomePage(context: context, wallet: wallet, storage: storage);
     }
   }
 
   _noLocalAuth() async {
-    await storage.write(key: "setupdone", value: "true");
-    await storage.write(key: "lock", value: "false");
-    if (context.mounted) {
+    await Future.wait([
+      Future(() => storage.write(key: "setupdone", value: "true")),
+      Future(() => storage.write(key: "lock", value: "false")),
+    ]);
+    if (mounted) {
       goToHomePage(context: context, wallet: wallet, storage: storage);
     }
   }

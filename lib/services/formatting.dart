@@ -1,12 +1,6 @@
-import 'package:mobx/mobx.dart';
-
 import 'package:intl/intl.dart';
 
-part 'formatting.g.dart';
-
-class FormattingProvider = _FormattingProvider with _$FormattingProvider;
-
-abstract class _FormattingProvider with Store {
+class FormattingProvider {
   String formatTimeStamp(int? timestamp) {
     int result = timestamp ?? 0;
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(result * 1000);
@@ -46,15 +40,15 @@ abstract class _FormattingProvider with Store {
   }
 
   String formatSpeed(String speed) {
-    if (speed == 'Highest Fee, Settles Fastest (<10 minutes)') {
+    if (speed == 'Highest Fee (settles <10 minutes)') {
       return 'Emergency';
-    } else if (speed == 'Higher Fee, Settles Faster (around 10 minutes)') {
+    } else if (speed == 'Higher Fee (settles around 10 minutes)') {
       return 'Fast';
-    } else if (speed == 'Moderate Fee, Moderate Settlement (around 1 hour)') {
+    } else if (speed == 'Moderate Fee (settles around 1 hour)') {
       return 'Medium';
-    } else if (speed == 'Lower Fee, Settles Slower (around 24 hours)') {
+    } else if (speed == 'Lower Fee (settles around 24 hours)') {
       return 'Slow';
-    } else if (speed == 'Lowest Fee, Settles Slowest (around 7 days)') {
+    } else if (speed == 'Lowest Fee (settles around 7 days)') {
       return 'Super Slow';
     } else {
       return 'Medium';

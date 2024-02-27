@@ -128,7 +128,7 @@ abstract class _WalletProvider with Store {
         return 1;
       } else {
         return b.confirmationTime!.timestamp!
-            .compareTo(a.confirmationTime!.timestamp!);
+            .compareTo(a.confirmationTime!.timestamp);
       }
     });
   }

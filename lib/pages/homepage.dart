@@ -31,9 +31,11 @@ class _HomePageState extends State<HomePage> {
   _refreshWallet() async {
     try {
       await wallet.syncWallet();
-      await wallet.getBlockchainHeight();
-      await wallet.getBalance();
-      await wallet.getTransactions();
+      await Future.wait([
+        Future(() => wallet.getBlockchainHeight()),
+        Future(() => wallet.getBalance()),
+        Future(() => wallet.getTransactions()),
+      ]);
       if (wallet.transactions.isNotEmpty) {
         setState(() {
           _transactionAreaMessage = 'Tap on a transaction to get more info.';

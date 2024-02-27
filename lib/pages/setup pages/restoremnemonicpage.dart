@@ -40,8 +40,10 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
         duration: Duration(seconds: 2),
       ));
       try {
-        await wallet.createOrRestoreWallet(mnemonic: _mnemonic.text);
-        await storage.write(key: "mnemonic", value: _mnemonic.text);
+        await Future.wait([
+          Future(() => wallet.createOrRestoreWallet(mnemonic: _mnemonic.text)),
+          Future(() => storage.write(key: "mnemonic", value: _mnemonic.text)),
+        ]);
         wallet.mnemonic = "";
         await wallet.getNewAddress();
         await storage.write(key: "address", value: wallet.walletAddress);
@@ -58,13 +60,15 @@ class _RestoreMnemonicPageState extends State<RestoreMnemonicPage> {
     final localAuthAvailable =
         await authentication.checkAuthenticationAvailability();
     if (!localAuthAvailable) {
-      await storage.write(key: "setupdone", value: "true");
-      await storage.write(key: "lock", value: "false");
-      if (context.mounted) {
+      await Future.wait([
+        Future(() => storage.write(key: "setupdone", value: "true")),
+        Future(() => storage.write(key: "lock", value: "false")),
+      ]);
+      if (mounted) {
         goToHomePage(context: context, wallet: wallet, storage: storage);
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         goToAuthenticationQuestionPage(
             context: context, wallet: wallet, storage: storage);
       }

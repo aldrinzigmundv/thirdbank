@@ -1,23 +1,14 @@
-import 'package:mobx/mobx.dart';
-
 import 'package:local_auth/local_auth.dart';
 
-part 'authentication.g.dart';
-
-class AuthenticationProvider = _AuthenticationProvider
-    with _$AuthenticationProvider;
-
-abstract class _AuthenticationProvider with Store {
+class AuthenticationProvider {
   late LocalAuthentication auth;
 
   late List<BiometricType> availableBiometrics;
 
-  @action
   initialize() {
     auth = LocalAuthentication();
   }
 
-  @action
   checkAuthenticationAvailability() async {
     LocalAuthentication auth = LocalAuthentication();
     final localAuthAvailable = await auth.isDeviceSupported();
@@ -28,7 +19,6 @@ abstract class _AuthenticationProvider with Store {
     }
   }
 
-  @action
   authenticate() async {
     try {
       final bool didAuthenticate = await auth.authenticate(

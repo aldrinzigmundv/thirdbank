@@ -21,10 +21,10 @@ class _ReceivePageState extends State<ReceivePage> {
 
   _copyWalletAddressToClipboard() {
     Clipboard.setData(ClipboardData(text: wallet.walletAddress));
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Wallet address copied to clipboard."),
-            duration: Duration(seconds: 2),
-          ));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Wallet address copied to clipboard."),
+      duration: Duration(seconds: 2),
+    ));
   }
 
   @override
